@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script src="js/react.development.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/babel.js" type="text/javascript" charset="utf-8"></script>
+	<body>
+		<div id="box"></div>
+		<script type="text/babel">
+				class Fun extends React.Component{
+					constructor(props){
+						super(props)
+						this.state={
+							n:props.n
+						}
+					}
+					static defaultProps={
+						n:20
+					}
+					change(i){
+						this.setState({
+							n:this.state.n+i
+						})
+						this.props.changeSum(i)
+					}
+					render(){
+						return <p>{this.state.n}
+						<button onClick={this.change.bind(this,1)}>增加</button>
+						<button onClick={this.change.bind(this,-1)}>减少</button>
+						</p>
+					}
+				}
+				class App extends React.Component{
+					constructor(props){
+						super(props)
+						this.initNums = [20,10,30,20]
+						this.state={
+							sum:this.initNums.reduce((a,b)=>a+b)
+						}
+						this.changeSum=this.changeSum.bind(this)
+					}
+					changeSum(n){
+						this.setState({
+							sum:this.state.sum+n
+						})
+					}
+					render(){
+					return	<div>
+							{
+								this.initNums.map((item,index)=>{
+						 			return <Fun key={index} n={item} changeSum={this.changeSum}/>
+								})
+							}
+						 	{this.state.sum}
+							</div>
+					}
+				}
+			ReactDOM.render(
+			<App />,document.getElementById("box"))
+		</script>
+	</body>
+</html>
